@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th=http://www.thymeleaf.org lang="ko">
+            <header th:fragment="header" th:class="'d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom'">
+                <ul th:class="'nav col-12 col-md-auto mb-2 justify-content-center mb-md-0'">
+                    <li><a th:href="@{/}" th:class="'nav-link px-2 link-secondary'">Home</a></li>
+                    <li><a th:href="@{/}" th:class="'nav-link px-2 link-dark'">나의 중간 지점</a></li>
+                </ul>
+
+                <div th:class="'col-md-3 text-end'">
+                    <button th:type="button" th:class="'btn btn-outline-primary me-2'">로그인</button>
+                    <button th:type="button" th:class="'btn btn-primary'">회원가입</button>
+                </div>
+            </header>
+</html>

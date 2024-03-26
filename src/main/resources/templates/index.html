@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th=http://www.thymeleaf.org lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/index/index.js}"></script>
+</th:block>
+<body>
+    <div layout:fragment="content">
+        <div th:class="people" >
+            <div th:class="'row mb-3 text-center'">
+                <div th:class="'col-2 themed-grid-col'" th:text="순서"></div>
+                <div th:class="'col-4 themed-grid-col'" th:text="이름"></div>
+                <div th:class="'col-4 themed-grid-col'" th:text="'출발 장소'"></div>
+                <div th:class="'col-2 themed-grid-col'">삭제</div>
+            </div>
+            <form th:method="post">
+                <div th:class="'row mb-3 text-center justify-content-evenly person'">
+                    <div th:class="'col-sm-2 themed-grid-col align-content-center sequence'" th:text="1"></div>
+                    <div th:class="'col-sm-4 themed-grid-col'">
+                        <label>
+                            <input th:class="form-control" th:type="text" th:placeholder="'이름을 입력해 주세요.'">
+                        </label>
+                    </div>
+                    <div th:class="'col-sm-4 themed-grid-col'">
+                        <label>
+                            <input th:class="form-control" th:type="text" th:placeholder="'주소를 입력해 주세요'">
+                        </label>
+                    </div>
+                    <div th:class="'col-2 themed-grid-col'">
+                        <button th:class="'btn-close btn'" th:type="button"></button>
+                    </div>
+                </div>
+                <div th:class="'row mb-3 text-center justify-content-evenly person'">
+                    <div th:class="'col-sm-2 themed-grid-col align-content-center sequence'" th:text="2"></div>
+                    <div th:class="'col-sm-4 themed-grid-col'">
+                        <label>
+                            <input th:class="form-control" th:type="text" th:placeholder="'이름을 입력해 주세요.'">
+                        </label>
+                    </div>
+                    <div th:class="'col-sm-4 themed-grid-col'">
+                        <label>
+                            <input th:class="'form-control searchAddress'" th:type="text" th:placeholder="'주소를 입력해 주세요'">
+                            <div class="list-group position-absolute ps-2 resultAddress">
+
+                            </div>
+                        </label>
+                    </div>
+                    <div th:class="'col-2 themed-grid-col'">
+                        <button th:class="'btn-close btn'" th:type="button"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div th:class="'gap-2 d-md-flex justify-content-md-end mt-5'">
+            <button th:class="'btn btn-outline-primary add-person'" th:text="추가하기"></button>
+        </div>
+        <div th:class="'d-grid gap-2 col-6 mx-auto '">
+            <button th:class="'btn btn-primary'" th:type="button" th:text="'중간 지점 구하기'"></button>
+        </div>
+    </div>
+</body>
+</html>
