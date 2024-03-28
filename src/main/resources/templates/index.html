@@ -20,14 +20,11 @@
                         <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="1"></div>
                         <div class="col-sm-4 themed-grid-col">
                             <label>
-                                <input class="form-control" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name" required>
-
+                                <input class="form-control" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name">
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <label>
-                                <input required href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" type="text" placeholder="주소를 입력해 주세요" name="searchLocationDtoList[0].address">
-                            </label>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
                         </div>
                         <div class="col-2 themed-grid-col">
                             <button class="btn-close btn removeperson" type="button"></button>
@@ -37,13 +34,11 @@
                         <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="2"></div>
                         <div class="col-sm-4 themed-grid-col">
                             <label>
-                                <input class="form-control" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[1].name" required>
+                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[1].name">
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <label>
-                                <input required href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" type="text" placeholder="주소를 입력해 주세요" name="searchLocationDtoList[1].address">
-                            </label>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
                         </div>
                         <div class="col-2 themed-grid-col">
                             <button class="btn-close btn removeperson" type="button"></button>
@@ -54,7 +49,7 @@
                 <button class="btn btn-outline-primary add-person" type="button" th:text="추가하기"></button>
             </div>
             <div class="d-grid gap-2 col-6 mx-auto">
-                <button class="btn btn-primary get-center" type="submit" th:text="'중간 지점 구하기'"></button>
+                <button class="btn btn-primary get-center" type="button" th:text="'중간 지점 구하기'"></button>
             </div>
         </form>
             <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
