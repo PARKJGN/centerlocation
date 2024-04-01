@@ -1,12 +1,10 @@
-package com.ourcenterhere.app.centerlocation.CenterLocation.service;
+package com.ourcenterhere.app.centerlocation.location.service;
 
-import com.ourcenterhere.app.centerlocation.CenterLocation.dto.SearchLocationDto;
+import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Stream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Service
 public class CenterLocationServiceTest {

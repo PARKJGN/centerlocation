@@ -140,8 +140,6 @@ const searchAddress = (text) => {
                 // 도로명 안나와있으면 패스
                 if(doc.road_address_name==="") return
 
-                console.log(doc)
-
                 $(".addresslist").append(
                     `<a class="address list-group-item list-group-item-action py-3 lh-tight">
                         <div class="d-flex w-100 align-items-center justify-content-between placename">

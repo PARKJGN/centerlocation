@@ -1,46 +1,56 @@
-package com.ourcenterhere.app.centerlocation.CenterLocation.service;
+package com.ourcenterhere.app.centerlocation.location.service;
 
-import com.ourcenterhere.app.centerlocation.CenterLocation.dto.SearchLocationDto;
+import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
-public class CenterLocationService {
+public class LocationService {
 
     /*
         유저가 입력한 주소들의 좌표를 가지고 centroid 알고리즘을 통해 중심점을 구하는 함수
      */
-    public void centerLocation(List<SearchLocationDto> searchLocationDtoList){
+    public  Map<String, Double> centerLocation(List<SearchLocationDto> searchLocationDtoList){
 
-        List<SearchLocationDto> arrayList = arrayLocationList(searchLocationDtoList);
         double centerLongitude = 0;
         double centerLatitude = 0;
         double area = 0;
 
-        for(int i=0; i< searchLocationDtoList.size(); i++){
+        if(searchLocationDtoList.size()==2){
+            centerLongitude = (searchLocationDtoList.get(0).getLongitude() + searchLocationDtoList.get(1).getLongitude()) / 2.0;
+            centerLatitude = (searchLocationDtoList.get(0).getLatitude() + searchLocationDtoList.get(1).getLatitude()) / 2.0;
 
-            int j = i+1;
+        }else{
+            List<SearchLocationDto> locList = arrayLocationList(searchLocationDtoList);
 
-            // 마지막 항은 다각형의 첫번째 점과 이어야 하므로 따로 처리
-            if(j >= searchLocationDtoList.size()) j=0;
+            for(int i=0; i< searchLocationDtoList.size(); i++){
 
-            double temp = (arrayList.get(i).getLatitude()*arrayList.get(j).getLongitude() - arrayList.get(j).getLatitude()*arrayList.get(i).getLongitude());
+                int j = i+1;
 
-            area += temp;
+                // 마지막 항은 다각형의 첫번째 점과 이어야 하므로 따로 처리
+                if(j >= searchLocationDtoList.size()) j=0;
 
-            centerLongitude += (arrayList.get(i).getLongitude()+arrayList.get(j).getLongitude()) * temp;
-            centerLatitude += (arrayList.get(i).getLatitude()+arrayList.get(j).getLatitude()) * temp;
+                double temp = (locList.get(i).getLatitude()*locList.get(j).getLongitude() - locList.get(j).getLatitude()*locList.get(i).getLongitude());
+
+                area += temp;
+
+                centerLongitude += (locList.get(i).getLongitude()+locList.get(j).getLongitude()) * temp;
+                centerLatitude += (locList.get(i).getLatitude()+locList.get(j).getLatitude()) * temp;
+            }
+
+            centerLongitude = centerLongitude/(area*3);
+            centerLatitude = centerLatitude/(area*3);
         }
 
-        centerLongitude = centerLongitude/(area*3);
-        centerLatitude = centerLatitude/(area*3);
 
+        Map<String, Double> center = new HashMap<>();
+
+        center.put("Longitude", centerLongitude);
+        center.put("Latitude", centerLatitude);
+
+        return center;
 
     }
 
@@ -78,6 +88,14 @@ public class CenterLocationService {
         List<SearchLocationDto> arrayLocationDtoList = Stream.of(leftArrayList, rightArrayList).flatMap(Collection::stream).toList();
 
         return arrayLocationDtoList;
+    }
+
+    /*
+        좌표 저장
+     */
+    public Long location(){
+
+        return 1L;
     }
 
 }

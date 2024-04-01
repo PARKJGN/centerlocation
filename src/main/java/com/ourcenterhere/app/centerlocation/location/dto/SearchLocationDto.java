@@ -1,4 +1,4 @@
-package com.ourcenterhere.app.centerlocation.CenterLocation.dto;
+package com.ourcenterhere.app.centerlocation.location.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
