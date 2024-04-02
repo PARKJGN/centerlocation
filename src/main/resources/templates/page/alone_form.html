@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th=http://www.thymeleaf.org lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<th:block layout:fragment="script">
+    <script th:src="@{/alone/aloneForm.js}"></script>
+</th:block>
+<body>
+    <div layout:fragment="content">
+        <form class="adressform" method="post" action="/search-center">
+                <div class="row mb-3 text-center">
+                    <div class="col-2 themed-grid-col" th:text="순서"></div>
+                    <div class="col-4 themed-grid-col" th:text="이름"></div>
+                    <div class="col-4 themed-grid-col" th:text="'출발 장소'"></div>
+                    <div class="col-2 themed-grid-col">삭제</div>
+                </div>
+                    <div class="people">
+                    <div class="row mb-3 text-center justify-content-evenly person">
+                        <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="1"></div>
+                        <div class="col-sm-4 themed-grid-col">
+                            <label>
+                                <input class="form-control" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name">
+                            </label>
+                        </div>
+                        <div class="col-sm-4 themed-grid-col">
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                        </div>
+                        <div class="col-2 themed-grid-col">
+                            <button class="btn-close btn removeperson" type="button"></button>
+                        </div>
+                    </div>
+                    <div class="row mb-3 text-center justify-content-evenly person">
+                        <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="2"></div>
+                        <div class="col-sm-4 themed-grid-col">
+                            <label>
+                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[1].name">
+                            </label>
+                        </div>
+                        <div class="col-sm-4 themed-grid-col">
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                        </div>
+                        <div class="col-2 themed-grid-col">
+                            <button class="btn-close btn removeperson" type="button"></button>
+                        </div>
+                    </div>
+                    </div>
+            <div class="gap-2 d-md-flex justify-content-md-end mt-5">
+                <button class="btn btn-outline-primary add-person" type="button" th:text="추가하기"></button>
+            </div>
+            <div class="d-grid gap-2 col-6 mx-auto">
+                <button class="btn btn-primary get-center" type="button" th:text="'중간 지점 구하기'"></button>
+            </div>
+        </form>
+            <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header border-bottom">
+                    <label>
+                        <input class="form-control searchaddress" type="text" placeholder="주소">
+                    </label>
+                    <a class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="search bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                        </svg>
+                    </a>
+                    <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="addresslist list-group list-group-flush border-bottom scrollarea">
+                </div>
+            </div>
+    </div>
+</body>
+</html>

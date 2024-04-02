@@ -7,11 +7,11 @@ import com.ourcenterhere.app.centerlocation.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,13 +24,23 @@ public class CenterLocationController {
     public String SearchCenter(@ModelAttribute SearchLocationDtoList list, Model model){
 
         List<SearchLocationDto> searchLocationDtoList = list.getSearchLocationDtoList();
-        Map<String, Double> center = centerLocationService.centerLocation(searchLocationDtoList);
 
-        roomService.enrollRoom(searchLocationDtoList);
+        UUID uuid = roomService.enrollRoom(searchLocationDtoList);
 
-        model.addAttribute("locationList", searchLocationDtoList);
+        return "redirect:search-center/"+uuid;
+    }
+
+    @GetMapping("/search-center/{id}")
+    public String SearchCenter(@PathVariable String id, Model model){
+
+        List<SearchLocationDto> locList = roomService.findLocListByRoomId(id);
+
+        Map<String, Double> center = centerLocationService.centerLocation(locList);
+
+        model.addAttribute("uuid",id);
+        model.addAttribute("locationList", locList);
         model.addAttribute("center", center);
 
-        return "/page/center_location";
+        return "/page/alone_center_location";
     }
 }

@@ -1,12 +1,11 @@
 package com.ourcenterhere.app.centerlocation.location.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ourcenterhere.app.centerlocation.location.entity.LocationEntity;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
+@ToString
 public class SearchLocationDto {
 
     private String name;
@@ -14,4 +13,20 @@ public class SearchLocationDto {
     private double longitude;
 
     private double latitude;
+
+    @Builder
+    public SearchLocationDto(String name, double longitude, double latitude){
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
+
+    public LocationEntity toEntity(){
+        return LocationEntity.builder()
+                .name(name)
+                .latitude(latitude)
+                .longitude(longitude)
+                .build();
+    }
+
 }

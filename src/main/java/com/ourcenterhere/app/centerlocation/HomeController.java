@@ -1,6 +1,5 @@
 package com.ourcenterhere.app.centerlocation;
 
-import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDtoList;
 import com.ourcenterhere.app.centerlocation.searchAddress.ApiSearchAddress;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,9 +17,13 @@ public class HomeController {
 
     private final ApiSearchAddress apiSearchAddress;
 
+    @GetMapping("/alone")
+    public String aloneForm(Model model){
+        return "/page/alone_form";
+    }
+
     @GetMapping("/")
     public String home(Model model){
-        model.addAttribute("locForm", new SearchLocationDtoList());
         return "index";
     }
 

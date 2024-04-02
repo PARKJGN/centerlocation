@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!-- config -->
+<th:block th:replace="fragments/config::config"></th:block>
+
+<!-- header -->
+<body class="d-flex h-100 text-center vsc-initialized">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <div th:replace="fragments/cover_header::header"></div>
+
+        <!-- content -->
+        <main layout:fragment="content"></main>
+
+        <footer th:replace="fragments/cover_footer::footer"></footer>
+    </div>
+</body>
+</html>

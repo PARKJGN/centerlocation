@@ -90,12 +90,4 @@ public class LocationService {
         return arrayLocationDtoList;
     }
 
-    /*
-        좌표 저장
-     */
-    public Long location(){
-
-        return 1L;
-    }
-
 }

@@ -3,7 +3,7 @@ package com.ourcenterhere.app.centerlocation.room.entity;
 import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
 import com.ourcenterhere.app.centerlocation.location.entity.LocationEntity;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomEntity {
 
     @Id
@@ -21,7 +22,6 @@ public class RoomEntity {
     @UuidGenerator
     private UUID uuid;
 
-    @CreationTimestamp
     private LocalDateTime enrollDate;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
@@ -30,13 +30,10 @@ public class RoomEntity {
     @Enumerated(EnumType.STRING)
     private RoomType type;
 
-    //생성자 함수
-    public static RoomEntity createRoom(RoomType type, List<LocationEntity> loc){
-        RoomEntity room = new RoomEntity();
-        room.type = type;
-        for(LocationEntity locationEntity: loc){
-        }
-        return room;
+    @Builder
+    public RoomEntity(RoomType type){
+        this.type = type;
+        this.enrollDate = LocalDateTime.now();
     }
 
 }
