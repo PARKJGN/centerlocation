@@ -28,3 +28,13 @@
    - 9개의 장소를 입력하려면 시간이 오래걸린다.
    - 그래서 방개념을 도입하여 url을 하나 생성
    - url에 들어가면 여러명이서 url의 내용을 공유
+
+2024-04-02
+- cover_layout 추가
+- h2연결 후 비지니스 로직 테스트
+  - 혼자입력 (insert, select, uri share)
+- ExceptionHandler
+    - RoomNotFound (친구 방을 못찾을 때)
+    - Validation (Valid 에서 오류났을때)
+    - Exception (통합 오류)
+    - 추가해야될 것 : 현재 return이 json형태로 타임스탬프, 내용이 찍히는데 오류페이지를 만들어서 관리를 해야될 것 같다.
