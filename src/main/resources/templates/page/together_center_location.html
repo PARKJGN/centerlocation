@@ -5,19 +5,60 @@
 
 <th:block layout:fragment="script">
     <script type="text/javascript" th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=6ab5803711118054a4d4ddd17c1cdf5f'"></script>
-    <script th:if="${uuid}" th:src="@{/header/header.js}"></script>
+    <script th:src="@{/together/together.js}"></script>
+    <!-- offcanvas(주소목록) 이벤트 -->
+    <script th:src="@{/offcanvas/offcanvas.js}"></script>
+    <!--서버에서 넘긴 model값을 js에서 쓰기 위한 스크립트, kakaoMap -->
     <script th:inline="javascript">
         $(()=>{
+            //서버에서 model에 담아서 넘긴 값
             const center = [[${center}]];
             const locationList = [[${locationList}]];
+
+            if(locationList.length===0) zeroLocation();
+            else if(center===null) oneLocation(locationList);
+            else twoMoreLocation(center, locationList);
+        })
+
+        <!--방에서 가져온 장소들의 개수가 0개일 경우 -->
+        const zeroLocation = ()=>{
+            const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            const options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(37.498008, 127.028027), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+
+            const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+        }
+
+        <!--방에서 가져온 장소들의 개수가 1개일 경우 -->
+        const oneLocation = (locationList)=>{
+
+            const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            const options = { //지도를 생성할 때 필요한 기본 옵션
+                center: new kakao.maps.LatLng(locationList[0].latitude, locationList[0].longitude), //지도의 중심좌표.
+                level: 3 //지도의 레벨(확대, 축소 정도)
+            };
+            const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+            const locationMarker = new kakao.maps.Marker({
+                map:map,
+                position: new kakao.maps.LatLng(locationList[0].latitude, locationList[0].longitude),
+                image: new kakao.maps.MarkerImage(`/icon/number/1.png`,new kakao.maps.Size(64,64))
+            })
+        }
+        <!--방에서 가져온 장소들의 개수가 2개 이상일 경우 -->
+        const twoMoreLocation = (center, locationList)=>{
+
+            // 맵의 경계(유저에게 보여줄 지도의 범위)
             const bounds = new kakao.maps.LatLngBounds();
 
-            var container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-            var options = { //지도를 생성할 때 필요한 기본 옵션
+            const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+            const options = { //지도를 생성할 때 필요한 기본 옵션
                 center: new kakao.maps.LatLng(center.Latitude, center.Longitude), //지도의 중심좌표.
                 level: 3 //지도의 레벨(확대, 축소 정도)
             };
-            var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+            const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
             // 중심점 마커
             const centerMarker = new kakao.maps.Marker({
@@ -42,9 +83,9 @@
                 })
                 locationOverlay.setMap(map)
                 map.setBounds(bounds)
-             })
+            })
 
-        })
+        }
     </script>
 </th:block>
 
@@ -55,8 +96,52 @@
 <body>
     <div layout:fragment="content">
         <div id="map" style="width:100%;height:800px;">
-
         </div>
+        <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addLocationModalLabel">장소 추가하기</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="submit-location" method="post" action="/together/save">
+                            <div class="row text-center justify-content-evenly person">
+                                <div class="col-sm-4 themed-grid-col">
+                                    <label>
+                                        <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="name">
+                                    </label>
+                                </div>
+                                <div class="col-sm-4 themed-grid-col">
+                                    <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary addLocation">추가하기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header border-bottom">
+                <label>
+                    <input class="form-control searchaddress" type="text" placeholder="주소">
+                </label>
+                <a class="btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="search bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                    </svg>
+                </a>
+                <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="addresslist list-group list-group-flush border-bottom scrollarea">
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.ourcenterhere.app.centerlocation.location.controller;
 import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
 import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDtoList;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;
+import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class CenterLocationController {
 
         List<SearchLocationDto> searchLocationDtoList = list.getSearchLocationDtoList();
 
-        UUID uuid = roomService.enrollRoom(searchLocationDtoList);
+        UUID uuid = roomService.enrollAloneRoom(searchLocationDtoList);
 
         return "redirect:search-center/"+uuid;
     }
@@ -37,6 +38,7 @@ public class CenterLocationController {
 
         Map<String, Double> center = centerLocationService.centerLocation(locList);
 
+        model.addAttribute("alone", RoomType.ALONE);
         model.addAttribute("uuid",id);
         model.addAttribute("locationList", locList);
         model.addAttribute("center", center);

@@ -5,6 +5,9 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/alone/aloneForm.js}"></script>
+
+    <!-- offcanvas(주소목록) 이벤트 -->
+    <script th:src="@{/offcanvas/offcanvas.js}"></script>
 </th:block>
 <body>
     <div layout:fragment="content">
@@ -20,7 +23,7 @@
                         <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="1"></div>
                         <div class="col-sm-4 themed-grid-col">
                             <label>
-                                <input class="form-control" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name">
+                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name">
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">

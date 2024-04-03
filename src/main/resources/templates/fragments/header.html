@@ -3,16 +3,25 @@
             <header th:fragment="header" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
                 <div class="dropdown d-flex">
                         <a th:href="@{/}" class="nav-link px-2 link-dark">나의 중간 지점</a>
-                        <a th:href="@{/}" class="nav-link px-2 link-secondary">혼자 구하기</a>
+                        <a th:href="@{/alone}" class="nav-link px-2 link-secondary">혼자 구하기</a>
                         <a href="#" role="button" th:id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" class="nav-link px-2 link-secondary dropdown-toggle">같이 구하기</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="dropdown-item" href="#">방 만들기</a></li>
                         <li><a class="dropdown-item" href="#">방 참여하기</a></li>
                     </ul>
                 </div>
-                <div class="col-md-3 text-end">
-                    <button th:if="${uuid}  " th:type="button" class="btn btn-outline-primary me-2 share">공유하기</button>
+
+                <!-- 혼자 만들었을때 공유하기 버튼 -->
+                <div th:if="${alone}" class="col-md-3 text-end">
+                    <button type="button" class="btn btn-outline-primary me-2 share">공유하기</button>
                     <input class="shareMap" type="hidden" th:value="${uuid}">
+                </div>
+
+                <!-- 방 만들었을때 장소 추가, 목록보기 버튼 -->
+                <div th:if="${together}" class="col-md-3 text-end">
+                    <input class="uuid" type="hidden" th:value="${uuid}">
+                    <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#addLocationModal"  >장소 추가</button>
+                    <button type="button" class="btn btn-outline-primary me-2">장소 목록보기</button>
                 </div>
             </header>
 </html>
