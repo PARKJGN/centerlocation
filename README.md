@@ -38,3 +38,11 @@
     - Validation (Valid 에서 오류났을때)
     - Exception (통합 오류)
     - 추가해야될 것 : 현재 return이 json형태로 타임스탬프, 내용이 찍히는데 오류페이지를 만들어서 관리를 해야될 것 같다.
+
+ 2024-04-03
+- together page (같이 입력하기)
+   - save location
+   - select location
+- ExceptionHandler
+    - RoomNotMathType (방 타입이 다른 id를 입력했을때 )
+- offcanvnas와 modal을 같이 쓸때 index가 겹치는 문제가 발생한다. -> bootstrap으로 backdrop이 자동 생성 그래서 show.bs.offcanvas 이벤트가 실행이 될때 index를 수정했다.
