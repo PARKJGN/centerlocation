@@ -46,3 +46,12 @@
 - ExceptionHandler
     - RoomNotMathType (방 타입이 다른 id를 입력했을때 )
 - offcanvnas와 modal을 같이 쓸때 index가 겹치는 문제가 발생한다. -> bootstrap으로 backdrop이 자동 생성 그래서 show.bs.offcanvas 이벤트가 실행이 될때 index를 수정했다.
+
+2024-04-04
+- together page (같이 입력하기)
+   - remove location
+- setInterval 함수를 통해 5초마다 together page에 비동기로 데이터를 받아서 보여주기를 원했고,
+  그러기 위해서는 나의 로직들이 rest api 인지 아닌지 리팩토링이 필요하다고 느꼈다.
+
+- Exception Handler -> json
+- 404page, 500page
