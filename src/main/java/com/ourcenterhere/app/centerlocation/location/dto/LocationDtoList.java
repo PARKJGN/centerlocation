@@ -7,7 +7,8 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchLocationDtoList {
+@ToString
+public class LocationDtoList {
 
-    private List<SearchLocationDto> searchLocationDtoList;
+    private List<LocationDto> locationDtoList;
 }

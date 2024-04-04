@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <!-- config -->
-<th:block th:replace="fragments/config::config"></th:block>
+<th:block th:replace="~{fragments/config::config}"></th:block>
 
 <!-- header -->
 <body>
 <div class="container">
-    <div th:replace="fragments/header::header"></div>
+    <div th:replace="~{fragments/header::header}"></div>
 
     <!-- content -->
     <div layout:fragment="content"  ></div>

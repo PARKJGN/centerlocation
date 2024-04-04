@@ -1,6 +1,6 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
-import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
+import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +21,7 @@ import java.util.UUID;
 public class RoomController {
 
     private final RoomService roomService;
-    private final LocationService centerLocationService;
+    private final LocationService locationService;
 
     @ResponseBody
     @GetMapping("/getRoomUrl/{id}")
@@ -46,14 +45,15 @@ public class RoomController {
 
     @GetMapping("/together/search-center/{id}")
     public String togetherJoinRoom(@PathVariable String id, Model model){
-        List<SearchLocationDto> locList = roomService.findLocListByRoomId(id);
+        List<LocationDto> locList = roomService.findLocListByRoomId(id, RoomType.TOGETHER);
         Map<String, Double> center = null;
 
         // 저장된 장소가 2개 이상이면 center구하고 클라이언트한테 보여준다.
         if(locList.size()>=2){
-            center = centerLocationService.centerLocation(locList);
+            center = locationService.centerLocation(locList);
             model.addAttribute("center", center);
         }
+        System.out.println(locList.toString());
         model.addAttribute("uuid",id);
         model.addAttribute("together", RoomType.TOGETHER);
         model.addAttribute("locationList", locList);
@@ -61,12 +61,16 @@ public class RoomController {
     }
 
     @PostMapping("/together/save")
-    public String saveLocationInRoom(@Valid SearchLocationDto locationDto){
-        System.out.println(locationDto);
-
+    public String saveLocationInRoom(@Valid LocationDto locationDto){
         roomService.saveLocation(locationDto);
-        System.out.println(locationDto);
         return "redirect:/together/search-center/"+locationDto.getRoomId();
+    }
+
+    // restapi로 바꾸기
+    @DeleteMapping("/together/removeLocation/{id}")
+    public String removeLocation(@PathVariable Long id){
+        locationService.removeLocation(id);
+        return"";
     }
 
 }

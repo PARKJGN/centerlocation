@@ -1,11 +1,14 @@
 package com.ourcenterhere.app.centerlocation.exception;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND)
+@Getter
+@RequiredArgsConstructor
 public class RoomNotFoundException extends RuntimeException{
-    public RoomNotFoundException(String message) {
-        super(message);
-    }
+
+    private final  ErrorCode errorCode;
+
 }

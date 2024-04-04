@@ -12,7 +12,7 @@ $(()=>{
     // 주소입력 사이드바 사라질때 안에 내용 초기화
     $(".offcanvas").on("hidden.bs.offcanvas", (e) => {
         $(".searchaddress").val("")
-        $(".addresslist").empty()
+        $(".address-list").empty()
     })
 
     // 주소입력 Enter key 적용
@@ -51,7 +51,7 @@ const searchAddress = (text) => {
         dataType: 'JSON',
         success: (res)=> {
 
-            $(".addresslist").empty();
+            $(".address-list").empty();
 
             if(res.documents.length===0) {
                 alert("검색결과가 없습니다.")
@@ -62,12 +62,12 @@ const searchAddress = (text) => {
                 // 도로명 안나와있으면 패스
                 if(doc.road_address_name==="") return
 
-                $(".addresslist").append(
+                $(".address-list").append(
                     `<a class="address list-group-item list-group-item-action py-3 lh-tight">
                         <div class="d-flex w-100 align-items-center justify-content-between placename">
                             <strong class="mb-1">${doc.place_name}</strong>
                         </div>
-                        <div class="col-10 mb-1 small roadname">${doc.road_address_name}</div>
+                        <div class="col-10 mb-1 small road-name">${doc.road_address_name}</div>
                         <input class="longitude" type="hidden" value=${doc.x}>
                         <input class="latitude" type="hidden" value=${doc.y}>
                     </a>

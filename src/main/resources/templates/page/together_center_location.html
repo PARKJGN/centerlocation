@@ -79,7 +79,7 @@
 
                 const locationOverlay = new kakao.maps.CustomOverlay({
                     position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
-                    content: `<div class ="label"><span class="left"></span><span class="center">${loc.name}</span><span class="right"></span></div>`
+                    content: `<div class ="label"><span class="left"></span><span class="center">${loc.userName}</span><span class="right"></span></div>`
                 })
                 locationOverlay.setMap(map)
                 map.setBounds(bounds)
@@ -109,11 +109,13 @@
                             <div class="row text-center justify-content-evenly person">
                                 <div class="col-sm-4 themed-grid-col">
                                     <label>
-                                        <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="name">
+                                        <input class="form-control user-name" type="text" placeholder="이름을 입력해 주세요." name="userName">
+                                        <input hidden="hidden">
                                     </label>
                                 </div>
                                 <div class="col-sm-4 themed-grid-col">
-                                    <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                                    <span href="#addressListForm" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                                    <input class = "road-name" type="hidden" name="roadName">
                                 </div>
                             </div>
                         </form>
@@ -126,7 +128,8 @@
             </div>
         </div>
 
-        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <!-- 주소 입력 offcanvas -->
+        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="addressListForm" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header border-bottom">
                 <label>
                     <input class="form-control searchaddress" type="text" placeholder="주소">
@@ -138,7 +141,26 @@
                 </a>
                 <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="addresslist list-group list-group-flush border-bottom scrollarea">
+            <div class="address-list list-group list-group-flush border-bottom scrollarea">
+            </div>
+        </div>
+
+        <!-- 유저들이 입력한 주소 목록 offcanvas -->
+        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="userAddressList" aria-labelledby="offcanvasExampleLabel">
+            <div class="offcanvas-header border-bottom">
+                <span>주소 목록</span>
+            </div>
+            <div class=" list-group list-group-flush border-bottom scrollarea">
+                <a th:each="address : ${locationList}" class="user-address list-group-item list-group-item-action py-3 lh-tight">
+                    <div class="d-flex w-100 align-items-center justify-content-between placename">
+                        <strong class="mb-1" th:text="${address.getUserName()}"></strong>
+                        <input type="hidden" th:value="${address.getId()}">
+                        <button class="btn-close btn remove-address" type="button"></button>
+                    </div>
+                    <div class="col-10 mb-1 small" th:text="${address.getRoadName()}">
+
+                    </div>
+                </a>
             </div>
         </div>
 

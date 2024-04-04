@@ -1,10 +1,8 @@
 package com.ourcenterhere.app.centerlocation.room.entity;
 
-import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
 import com.ourcenterhere.app.centerlocation.location.entity.LocationEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;

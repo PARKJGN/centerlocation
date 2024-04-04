@@ -38,7 +38,7 @@
 
                 const locationOverlay = new kakao.maps.CustomOverlay({
                     position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
-                    content: `<div class ="label"><span class="left"></span><span class="center">${loc.name}</span><span class="right"></span></div>`
+                    content: `<div class ="label"><span class="left"></span><span class="center">${loc.userName}</span><span class="right"></span></div>`
                 })
                 locationOverlay.setMap(map)
                 map.setBounds(bounds)

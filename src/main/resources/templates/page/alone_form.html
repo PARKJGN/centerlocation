@@ -11,37 +11,39 @@
 </th:block>
 <body>
     <div layout:fragment="content">
-        <form class="adressform" method="post" action="/search-center">
+        <form class="adressform" method="post" action="/alone/save">
                 <div class="row mb-3 text-center">
-                    <div class="col-2 themed-grid-col" th:text="순서"></div>
-                    <div class="col-4 themed-grid-col" th:text="이름"></div>
-                    <div class="col-4 themed-grid-col" th:text="'출발 장소'"></div>
+                    <div class="col-2 themed-grid-col">순서</div>
+                    <div class="col-4 themed-grid-col">이름</div>
+                    <div class="col-4 themed-grid-col">출발 장소</div>
                     <div class="col-2 themed-grid-col">삭제</div>
                 </div>
                     <div class="people">
                     <div class="row mb-3 text-center justify-content-evenly person">
-                        <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="1"></div>
+                        <div class="col-sm-2 themed-grid-col align-content-center sequence">1</div>
                         <div class="col-sm-4 themed-grid-col">
                             <label>
-                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[0].name">
+                                <input class="form-control user-name" type="text" placeholder="이름을 입력해 주세요." name="LocationDtoList[0].userName">
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>
+                            <input class = "road-name" type="hidden" name="LocationDtoList[0].roadName">
                         </div>
                         <div class="col-2 themed-grid-col">
                             <button class="btn-close btn removeperson" type="button"></button>
                         </div>
                     </div>
                     <div class="row mb-3 text-center justify-content-evenly person">
-                        <div class="col-sm-2 themed-grid-col align-content-center sequence" th:text="2"></div>
+                        <div class="col-sm-2 themed-grid-col align-content-center sequence">2</div>
                         <div class="col-sm-4 themed-grid-col">
                             <label>
-                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[1].name">
+                                <input class="form-control user-name" type="text" placeholder="이름을 입력해 주세요." name="LocationDtoList[1].userName">
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>
+                            <input class = "road-name" type="hidden" name="LocationDtoList[1].roadName">
                         </div>
                         <div class="col-2 themed-grid-col">
                             <button class="btn-close btn removeperson" type="button"></button>
@@ -67,7 +69,7 @@
                     </a>
                     <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="addresslist list-group list-group-flush border-bottom scrollarea">
+                <div class="address-list list-group list-group-flush border-bottom scrollarea">
                 </div>
             </div>
     </div>

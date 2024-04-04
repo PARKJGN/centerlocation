@@ -46,11 +46,12 @@ const addPerson = () =>{
         `                        <div class="col-sm-2 themed-grid-col align-content-center sequence">${lastSequence}</div>\n` +
         '                        <div class="col-sm-4 themed-grid-col">\n' +
         '                            <label>\n' +
-        `                                <input class="form-control name" type="text" placeholder="이름을 입력해 주세요." name="searchLocationDtoList[${lastSequence-1}].name">\n` +
+        `                                <input class="form-control user-name" type="text" placeholder="이름을 입력해 주세요." name="LocationDtoList[${lastSequence-1}].userName">\n` +
         '                            </label>\n' +
         '                        </div>\n' +
         '                        <div class="col-sm-4 themed-grid-col">\n' +
         '                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>\n' +
+        `                            <input class = "road-name" type="hidden" name="LocationDtoList[${lastSequence}].roadName">`+
         '                        </div>\n' +
         '                        <div class="col-2 themed-grid-col">\n' +
         '                            <button class="btn-close btn removeperson" type="button"></button>\n' +
@@ -62,12 +63,12 @@ const addPerson = () =>{
 const resetSequence = () =>{
     $(".person").each((idx, p)=>{
         $(p).find(".sequence").text(idx+1)
-        $(p).find(".name").attr("name", `searchLocationDtoList[${idx}].name`)
-
+        $(p).find(".user-name").attr("name", `LocationDtoList[${idx}].userName`)
+        $(p).find(".road-name").attr("name", `LocationDtoList[${idx}].roadName`)
 
         if($(p).find(".longitude").length !== 0){
-            $(p).find(".longitude").attr("name", `searchLocationDtoList[${idx}].longitude`)
-            $(p).find(".latitude").attr("name", `searchLocationDtoList[${idx}].latitude`)
+            $(p).find(".longitude").attr("name", `LocationDtoList[${idx}].longitude`)
+            $(p).find(".latitude").attr("name", `LocationDtoList[${idx}].latitude`)
         }
     })
 }
@@ -75,11 +76,12 @@ const resetSequence = () =>{
 // 주소목록 중 하나 적용하는 이벤트
 const setAddressInput = (e)=>{
 
-    const roadName = $(e.currentTarget).find('.roadname').text().trim();
+    const roadName = $(e.currentTarget).find('.road-name').text().trim();
     const latitude = $(e.currentTarget).find('.latitude').val().trim();
     const longitude = $(e.currentTarget).find('.longitude').val().trim();
 
     addressinput.text(roadName)
+    addressinput.next().val(roadName)
 
     const index = addressinput.parent().parent().index();
 
@@ -88,8 +90,8 @@ const setAddressInput = (e)=>{
         $(".latitude").val(latitude)
         $(".longitude").val(longitude)
     }else{
-        addressinput.parent().append(`<input class = "latitude" type="hidden" name="searchLocationDtoList[${index}].latitude" value=${latitude}>
-                                <input class = "longitude" type="hidden" name="searchLocationDtoList[${index}].longitude" value=${longitude}>
+        addressinput.parent().append(`<input class = "latitude" type="hidden" name="LocationDtoList[${index}].latitude" value=${latitude}>
+                                <input class = "longitude" type="hidden" name="LocationDtoList[${index}].longitude" value=${longitude}>
                                 `)
     }
 
@@ -99,19 +101,45 @@ const setAddressInput = (e)=>{
 // 정규식 검사 및 submit 호출
 const regexAndSubmit = ()=>{
 
+    const data = {};
+
     let regex = false
 
     $.each($(`.person`),(idx,el)=>{
-        if($(el).find(".latitude").val().trim()==="" || $(el).find(".longitude").val().trim()==="" || $(el).find(".name").val().trim()==="" || $(el).find(".inputaddress").text()==="주소를 입력해 주세요."){
+
+        let lati = $(el).find(".latitude");
+        let logi = $(el).find(".longitude");
+        let name = $(el).find(".user-name");
+
+        if(lati.length===0 || logi.length===0 || lati.val().trim()==="" || logi.val().trim()==="" || name.val().trim()==="" || $(el).find(".inputaddress").text()==="주소를 입력해 주세요." || $(el).find(".road-name").val().trim()===""){
             regex = true
             return false;
         }
+
+        data[lati.attr("name")] = lati.val();
+        data[logi.attr("name")] = logi.val();
+        data[name.attr("name")] = name.val();
+        data[$(el).find(".road-name")] = $(el).find(".road-name").val();
     })
 
     if(regex) {
         alert("빈칸을 채워주세요.")
         return false;
     }
+
+    $.ajax({
+        type: "post",
+        url: "/alone/save",
+        data: data,
+        dataType: "json",
+        success: (res)=>{
+            console.log(res)
+        },
+        error: (err)=>{
+            console.log(err)
+        }
+
+    })
 
     $(".adressform").submit()
 }

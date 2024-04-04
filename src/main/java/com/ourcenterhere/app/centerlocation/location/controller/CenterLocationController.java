@@ -1,7 +1,7 @@
 package com.ourcenterhere.app.centerlocation.location.controller;
 
-import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDto;
-import com.ourcenterhere.app.centerlocation.location.dto.SearchLocationDtoList;
+import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
+import com.ourcenterhere.app.centerlocation.location.dto.LocationDtoList;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
@@ -21,20 +21,22 @@ public class CenterLocationController {
     private final LocationService centerLocationService;
     private final RoomService roomService;
 
-    @PostMapping("/search-center")
-    public String SearchCenter(@ModelAttribute SearchLocationDtoList list, Model model){
+    @PostMapping("/alone/save")
+    public String SearchCenter(@ModelAttribute LocationDtoList list, Model model){
 
-        List<SearchLocationDto> searchLocationDtoList = list.getSearchLocationDtoList();
+        System.out.println(list);
+        List<LocationDto> locationDtoList = list.getLocationDtoList();
+        System.out.println(locationDtoList.toString());
 
-        UUID uuid = roomService.enrollAloneRoom(searchLocationDtoList);
+        UUID uuid = roomService.enrollAloneRoom(locationDtoList);
 
-        return "redirect:search-center/"+uuid;
+        return "redirect:/alone/save/"+uuid;
     }
 
-    @GetMapping("/search-center/{id}")
+    @GetMapping("/alone/save/{id}")
     public String SearchCenter(@PathVariable String id, Model model){
 
-        List<SearchLocationDto> locList = roomService.findLocListByRoomId(id);
+        List<LocationDto> locList = roomService.findLocListByRoomId(id, RoomType.ALONE);
 
         Map<String, Double> center = centerLocationService.centerLocation(locList);
 
@@ -45,4 +47,5 @@ public class CenterLocationController {
 
         return "/page/alone_center_location";
     }
+
 }
