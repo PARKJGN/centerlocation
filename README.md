@@ -57,11 +57,12 @@
 - 404page, 500page
 
 2024-04-05
-type : refactor
 
-ExceptionHandler를 통해 NoHandlerException 발생시 에러페이지로 이동
+- type : refactor
+
+    - ExceptionHandler를 통해 NoHandlerException 발생시 에러페이지로 이동
 (WAS까지 가지 않고 서블릿에서 처리)
 
- ajax를 통해 error가 나면 ExceptionHandler를 통해 오류 내용을 alert로 사용자에게 보여줌
+    - ajax를 통해 error가 나면 ExceptionHandler를 통해 오류 내용을 alert로 사용자에게 보여줌
 
-RestController, Controller 구분 - ResponseEntity를 통해 restapi 호출 시 명확한 데이터 상세정보 넘김
+    - RestController, Controller 구분 - ResponseEntity를 통해 restapi 호출 시 명확한 데이터 상세정보 넘김
