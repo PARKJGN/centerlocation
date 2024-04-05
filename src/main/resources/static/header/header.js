@@ -5,9 +5,10 @@ $(()=>{
 
         $.ajax({
             type : "get",
-            url : `/getRoomUrl/${id}`,
-            success: (data)=>{
-                navigator.clipboard.writeText(data)
+            url : `/roomUrl/${id}`,
+            success: (res)=>{
+                if(res.statusCode==="OK")
+                navigator.clipboard.writeText(res.resultData)
                     .then(()=>{
                         alert("주소가 복사되었습니다.")
                     })

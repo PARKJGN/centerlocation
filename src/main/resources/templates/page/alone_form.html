@@ -4,14 +4,14 @@
       layout:decorate="~{layouts/default_layout}">
 
 <th:block layout:fragment="script">
-    <script th:src="@{/alone/aloneForm.js}"></script>
+    <script th:src="@{/static/alone/aloneForm.js}"></script>
 
     <!-- offcanvas(주소목록) 이벤트 -->
-    <script th:src="@{/offcanvas/offcanvas.js}"></script>
+    <script th:src="@{/static/offcanvas/offcanvas.js}"></script>
 </th:block>
 <body>
     <div layout:fragment="content">
-        <form class="adressform" method="post" action="/alone/save">
+        <form class="locations-form" method="post" action="/alone/save">
                 <div class="row mb-3 text-center">
                     <div class="col-2 themed-grid-col">순서</div>
                     <div class="col-4 themed-grid-col">이름</div>
@@ -60,7 +60,7 @@
             <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                 <div class="offcanvas-header border-bottom">
                     <label>
-                        <input class="form-control searchaddress" type="text" placeholder="주소">
+                        <input class="form-control search-location" type="text" placeholder="주소">
                     </label>
                     <a class="btn">
                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="search bi bi-search" viewBox="0 0 16 16">

@@ -9,8 +9,10 @@ import com.ourcenterhere.app.centerlocation.room.entity.RoomEntity;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +35,7 @@ public class RoomService {
         for(LocationDto loc : list){
             if(Double.isNaN(loc.getLatitude()) || loc.getLatitude()==0.0 ||
                 Double.isNaN(loc.getLongitude()) || loc.getLongitude()==0.0 ||
-                loc.getUserName()==null || loc.getUserName().isEmpty() || loc.getRoadName().isEmpty()){
+                loc.getUserName()==null || loc.getUserName().isEmpty() || loc.getRoadName()==null){
                 throw new IllegalStateException();
             }
         }
@@ -87,6 +89,15 @@ public class RoomService {
         }
 
         return roomEntity.getUuid();
+    }
+
+    public void checkShareRoom(String id) throws NoHandlerFoundException {
+        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(id)).orElse(null);
+
+        if(roomEntity == null){
+            throw new NoHandlerFoundException("GET", id, new HttpHeaders());
+        }
+
     }
 
     @Transactional

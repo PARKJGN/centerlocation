@@ -5,7 +5,7 @@
 
 <th:block layout:fragment="script">
     <script type="text/javascript" th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=6ab5803711118054a4d4ddd17c1cdf5f'"></script>
-    <script th:if="${uuid}" th:src="@{/header/header.js}"></script>
+    <script th:if="${uuid}" th:src="@{/static/header/header.js}"></script>
     <script th:inline="javascript">
         $(()=>{
             const center = [[${center}]];
@@ -23,13 +23,13 @@
             const centerMarker = new kakao.maps.Marker({
                 map:map,
                 position: new kakao.maps.LatLng(center.Latitude, center.Longitude),
-                image: new kakao.maps.MarkerImage(`/icon/number/center.png`,new kakao.maps.Size(48,56))
+                image: new kakao.maps.MarkerImage(`/static/icon/number/center.png`,new kakao.maps.Size(48,56))
             })
 
             // 유저의 장소들에 맵마커, 오버레이 찍어주는 이벤트
             locationList.forEach((loc, idx)=>{
                 const locationMarker = new kakao.maps.Marker({
-                    image: new kakao.maps.MarkerImage(`/icon/number/${idx+1}.png`,new kakao.maps.Size(64,64)),
+                    image: new kakao.maps.MarkerImage(`/static/icon/number/${idx+1}.png`,new kakao.maps.Size(64,64)),
                     map: map,
                     position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
                 })
@@ -49,7 +49,7 @@
 </th:block>
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="/kakao/kakaoMap.css">
+    <link rel="stylesheet" href="/static/kakao/kakaoMap.css">
 </th:block>
 
 <body>

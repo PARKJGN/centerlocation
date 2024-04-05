@@ -119,27 +119,38 @@ const regexAndSubmit = ()=>{
         data[lati.attr("name")] = lati.val();
         data[logi.attr("name")] = logi.val();
         data[name.attr("name")] = name.val();
-        data[$(el).find(".road-name")] = $(el).find(".road-name").val();
+        data[$(el).find(".road-name").attr("name")] = $(el).find(".road-name").val();
     })
 
     if(regex) {
         alert("빈칸을 채워주세요.")
         return false;
     }
-
+    
+    // db에 insert 후 페이지 이동
     $.ajax({
         type: "post",
         url: "/alone/save",
         data: data,
         dataType: "json",
         success: (res)=>{
-            console.log(res)
+            if(res.statusCode==="OK"){
+                // 동적 form태그 생성
+                const form = $('<form hidden="hidden" method="post" action="/alone"></form>')
+
+                // 동적 input태그 생성
+                form.append($(`<input type="hidden" name="id" value=${res.resultData}>`))
+
+                form.appendTo('body')
+                form.submit()
+            } else{
+                alert("다시 시도해 주세요.")
+            }
         },
         error: (err)=>{
-            console.log(err)
-        }
+            alert(err.responseJSON.message)
 
+        }
     })
 
-    $(".adressform").submit()
 }

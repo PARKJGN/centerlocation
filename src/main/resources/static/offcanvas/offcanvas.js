@@ -6,17 +6,17 @@ $(()=>{
 
     // 주소목록 사이드바 show할때 주소 입력창 focus
     $(".offcanvas").on("shown.bs.offcanvas", (e) => {
-        $('.searchaddress').focus()
+        $('.search-location').focus()
     })
 
     // 주소입력 사이드바 사라질때 안에 내용 초기화
     $(".offcanvas").on("hidden.bs.offcanvas", (e) => {
-        $(".searchaddress").val("")
+        $(".search-location").val("")
         $(".address-list").empty()
     })
 
     // 주소입력 Enter key 적용
-    $(".searchaddress").on("keyup", (key) => {
+    $(".search-location").on("keyup", (key) => {
         key.preventDefault()
         if (key.keyCode === 13) {
             $(".search").click()
@@ -25,7 +25,7 @@ $(()=>{
 
     // 주소 검색
     $(".search").click(() => {
-        const text = $(".searchaddress").val();
+        const text = $(".search-location").val();
 
         if (text === "") return;
 
@@ -47,7 +47,7 @@ const searchAddress = (text) => {
 
     $.ajax({
         type: 'GET',
-        url: `/searchAddress/${text}`,
+        url: `/search-location/${text}`,
         dataType: 'JSON',
         success: (res)=> {
 
@@ -59,7 +59,7 @@ const searchAddress = (text) => {
             }
 
             res.documents.forEach((doc, idx)=>{
-                // 도로명 안나와있으면 패스
+                // 도로명 안나와있으면 보여주지 않기
                 if(doc.road_address_name==="") return
 
                 $(".address-list").append(
@@ -77,6 +77,7 @@ const searchAddress = (text) => {
         },
         error: (err) => {
             console.log(err)
+            alert("오류가 발생했습니다. 다시 시도해주세요.")
         }
     })
 }

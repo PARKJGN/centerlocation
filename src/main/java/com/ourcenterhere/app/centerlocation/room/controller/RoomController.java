@@ -1,11 +1,14 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
+import com.ourcenterhere.app.centerlocation.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,26 +25,6 @@ public class RoomController {
 
     private final RoomService roomService;
     private final LocationService locationService;
-
-    @ResponseBody
-    @GetMapping("/getRoomUrl/{id}")
-    public String RoomUrl(@PathVariable UUID id){
-        UriComponents uriComponents = UriComponentsBuilder
-                    .newInstance()
-                    .scheme("http")
-                    .host("localhost:8080")
-                    .path("search-center/")
-                    .path(String.valueOf(id))
-                    .build();
-        return uriComponents.toString();
-    }
-
-    @GetMapping("/makeRoom")
-    @ResponseBody
-    public String makeRoom(){
-        String id = roomService.enrollTogetherRoom();
-        return id;
-    }
 
     @GetMapping("/together/search-center/{id}")
     public String togetherJoinRoom(@PathVariable String id, Model model){

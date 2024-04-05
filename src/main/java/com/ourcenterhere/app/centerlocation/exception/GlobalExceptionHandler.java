@@ -8,13 +8,15 @@ import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.net.BindException;
 import java.time.LocalDateTime;
 
-@RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
+@ControllerAdvice
+public class GlobalExceptionHandler{
 
     @ExceptionHandler(RoomNotFoundException.class)
     public ResponseEntity<ErrorDetails> handleRoomNotFoundException(RoomNotFoundException ex){
@@ -34,8 +36,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return handleExceptionInternal(errorCode);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorDetails> handelIllegalState(IllegalStateException e){
+        ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
+        return handleExceptionInternal(errorCode);
+    }
+
+    // 추후에 logger?
+    // 존재하지 않는 엔드포인트에 접속 시 에러페이지로 이동시키기 위해
+    @ExceptionHandler({NoHandlerFoundException.class})
+    public String handelNoHandlerFound(Exception e){
+        return "/error/404";
+    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetails> handleAllException(Exception ex){
+    public ResponseEntity<ErrorDetails> handleException(Exception ex){
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
         return handleExceptionInternal(errorCode);
     }
@@ -48,6 +63,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                 .body(new ErrorDetails(errorCode));
 
     }
+
+
 
 
 }
