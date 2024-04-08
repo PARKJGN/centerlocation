@@ -5,14 +5,15 @@ $(()=>{
         $.ajax({
             type : "get",
             url : "/makeRoom",
-            success: (data)=>{
-                $(".room-code").text(`방 코드: ` + data)
+            success: (res)=>{
+                if(res.statusCode==="OK"){
+                    $(".room-code").text(`방 코드: ` + res.resultData)
 
-                $("#room-code-modal").modal("show");
-
+                    $("#room-code-modal").modal("show");
+                }
             },
             error: (err)=>{
-                alert("예기치 못한 오류가 발생했습니다. 다시 시도해 주세요.")
+                alert(err.responseJSON.message)
             }
         })
     })
@@ -21,7 +22,24 @@ $(()=>{
     $(".join-room").click(()=>{
         const code = $(".code").val().trim();
 
-        $(".submit-room").attr("action",`/together/search-center/${code}`)
-            .submit();
+        $.ajax({
+            type : "get",
+            url : `/checkRoom/${code}`,
+            success: (res)=>{
+                if(res.statusCode==="OK"){
+                    $(".submit-room").submit();
+                }
+            },
+            error: (err) =>{
+                alert(err.responseJSON.message)
+            }
+        })
+
+
+    })
+
+    // 방 참가하기 모달창 꺼지면 input값 초기화
+    $("#joinRoom").on("hidden.bs.modal", (e) => {
+        $(".code").val("")
     })
 })

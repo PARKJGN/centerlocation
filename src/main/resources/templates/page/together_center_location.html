@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="'//dapi.kakao.com/v2/maps/sdk.js?appkey=6ab5803711118054a4d4ddd17c1cdf5f'"></script>
     <script th:src="@{/static/together/together.js}"></script>
     <!-- offcanvas(주소목록) 이벤트 -->
-    <script th:src="@{/static/offcanvas/offcanvas.js}"></script>
+    <script th:src="@{/static/addressOffcanvas/offcanvas.js}"></script>
     <!--서버에서 넘긴 model값을 js에서 쓰기 위한 스크립트, kakaoMap -->
     <script th:inline="javascript">
         $(()=>{
@@ -16,7 +16,7 @@
             const locationList = [[${locationList}]];
 
             if(locationList.length===0) zeroLocation();
-            else if(center===null) oneLocation(locationList);
+            else if(locationList.length===1) oneLocation(locationList);
             else twoMoreLocation(center, locationList);
         })
 
@@ -90,7 +90,7 @@
 </th:block>
 
 <th:block layout:fragment="css">
-    <link rel="stylesheet" href="/kakao/kakaoMap.css">
+    <link rel="stylesheet" href="/static/kakao/kakaoMap.css">
 </th:block>
 
 <body>
@@ -105,7 +105,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="submit-location" method="post" action="/together/save">
+                        <form class="submit-location" method="post" action="/together/saveLocation">
                             <div class="row text-center justify-content-evenly person">
                                 <div class="col-sm-4 themed-grid-col">
                                     <label>
@@ -114,7 +114,7 @@
                                     </label>
                                 </div>
                                 <div class="col-sm-4 themed-grid-col">
-                                    <span href="#addressListForm" data-bs-toggle="offcanvas" class="form-control inputaddress" th:text="'주소를 입력해 주세요.'"></span>
+                                    <span href="#locationListForm" data-bs-toggle="offcanvas" class="form-control input-location" th:text="'주소를 입력해 주세요.'"></span>
                                     <input class = "road-name" type="hidden" name="roadName">
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
         </div>
 
         <!-- 주소 입력 offcanvas -->
-        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="addressListForm" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="locationListForm" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header border-bottom">
                 <label>
                     <input class="form-control search-location" type="text" placeholder="주소">
@@ -141,23 +141,23 @@
                 </a>
                 <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="address-list list-group list-group-flush border-bottom scrollarea">
+            <div class="location-list list-group list-group-flush border-bottom scrollarea">
             </div>
         </div>
 
         <!-- 유저들이 입력한 주소 목록 offcanvas -->
-        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="userAddressList" aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas offcanvas-end overflow-auto" tabindex="-1" id="userLocationList" aria-labelledby="offcanvasExampleLabel">
             <div class="offcanvas-header border-bottom">
                 <span>주소 목록</span>
             </div>
-            <div class=" list-group list-group-flush border-bottom scrollarea">
-                <a th:each="address : ${locationList}" class="user-address list-group-item list-group-item-action py-3 lh-tight">
+            <div class=" list-group list-group-flush border-bottom scrollarea user-location-list">
+                <a th:each="location : ${locationList}" class="user-location list-group-item list-group-item-action py-3 lh-tight">
                     <div class="d-flex w-100 align-items-center justify-content-between placename">
-                        <strong class="mb-1" th:text="${address.getUserName()}"></strong>
-                        <input type="hidden" th:value="${address.getId()}">
-                        <button class="btn-close btn remove-address" type="button"></button>
+                        <strong class="mb-1" th:text="${location.getUserName()}"></strong>
+                        <input type="hidden" th:value="${location.getId()}">
+                        <button class="btn-close btn remove-location" type="button"></button>
                     </div>
-                    <div class="col-10 mb-1 small" th:text="${address.getRoadName()}">
+                    <div class="col-10 mb-1 small" th:text="${location.getRoadName()}">
 
                     </div>
                 </a>

@@ -1,4 +1,4 @@
-package com.ourcenterhere.app.centerlocation.searchLocation;
+package com.ourcenterhere.app.centerlocation.kakaoSearchLocation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 
 @Controller
 @RequiredArgsConstructor
-public class SearchLocationController {
+public class KakaoSearchLocationController {
 
     private final ApiSearchLocation apiSearchLocation;
 

@@ -27,7 +27,7 @@ public class LocationDto {
     private String roomId;
 
     @Builder
-    public LocationDto(Long id,String userName, double longitude, double latitude, String roadName){
+    public LocationDto(Long id, String userName, double longitude, double latitude, String roadName){
         this.userName = userName;
         this.longitude = longitude;
         this.latitude = latitude;

@@ -50,7 +50,7 @@ const addPerson = () =>{
         '                            </label>\n' +
         '                        </div>\n' +
         '                        <div class="col-sm-4 themed-grid-col">\n' +
-        '                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>\n' +
+        '                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control input-location">주소를 입력해 주세요.</span>\n' +
         `                            <input class = "road-name" type="hidden" name="LocationDtoList[${lastSequence}].roadName">`+
         '                        </div>\n' +
         '                        <div class="col-2 themed-grid-col">\n' +
@@ -80,17 +80,17 @@ const setAddressInput = (e)=>{
     const latitude = $(e.currentTarget).find('.latitude').val().trim();
     const longitude = $(e.currentTarget).find('.longitude').val().trim();
 
-    addressinput.text(roadName)
-    addressinput.next().val(roadName)
+    addressInput.text(roadName)
+    addressInput.next().val(roadName)
 
-    const index = addressinput.parent().parent().index();
+    const index = addressInput.parent().parent().index();
 
     //이미 주소를 추가했으면 값만 교체
-    if(addressinput.parent().find('.latitude').length!==0){
+    if(addressInput.parent().find('.latitude').length!==0){
         $(".latitude").val(latitude)
         $(".longitude").val(longitude)
     }else{
-        addressinput.parent().append(`<input class = "latitude" type="hidden" name="LocationDtoList[${index}].latitude" value=${latitude}>
+        addressInput.parent().append(`<input class = "latitude" type="hidden" name="LocationDtoList[${index}].latitude" value=${latitude}>
                                 <input class = "longitude" type="hidden" name="LocationDtoList[${index}].longitude" value=${longitude}>
                                 `)
     }
@@ -111,7 +111,7 @@ const regexAndSubmit = ()=>{
         let logi = $(el).find(".longitude");
         let name = $(el).find(".user-name");
 
-        if(lati.length===0 || logi.length===0 || lati.val().trim()==="" || logi.val().trim()==="" || name.val().trim()==="" || $(el).find(".inputaddress").text()==="주소를 입력해 주세요." || $(el).find(".road-name").val().trim()===""){
+        if(lati.length===0 || logi.length===0 || lati.val().trim()==="" || logi.val().trim()==="" || name.val().trim()==="" || $(el).find(".input-location").text()==="주소를 입력해 주세요." || $(el).find(".road-name").val().trim()===""){
             regex = true
             return false;
         }

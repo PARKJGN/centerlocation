@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -26,9 +27,9 @@ public class RoomController {
     private final RoomService roomService;
     private final LocationService locationService;
 
-    @GetMapping("/together/search-center/{id}")
-    public String togetherJoinRoom(@PathVariable String id, Model model){
-        List<LocationDto> locList = roomService.findLocListByRoomId(id, RoomType.TOGETHER);
+    @PostMapping("/together")
+    public String togetherJoinRoom(@RequestParam String id, Model model){
+        List<LocationDto> locList = locationService.findLocListByRoomId(id, RoomType.TOGETHER);
         Map<String, Double> center = null;
 
         // 저장된 장소가 2개 이상이면 center구하고 클라이언트한테 보여준다.
@@ -36,24 +37,42 @@ public class RoomController {
             center = locationService.centerLocation(locList);
             model.addAttribute("center", center);
         }
-        System.out.println(locList.toString());
         model.addAttribute("uuid",id);
         model.addAttribute("together", RoomType.TOGETHER);
         model.addAttribute("locationList", locList);
         return "/page/together_center_location";
     }
 
-    @PostMapping("/together/save")
-    public String saveLocationInRoom(@Valid LocationDto locationDto){
-        roomService.saveLocation(locationDto);
-        return "redirect:/together/search-center/"+locationDto.getRoomId();
+    @PostMapping("/alone")
+    public String aloneJoinRoom(@RequestParam String id, Model model){
+
+        List<LocationDto> locList = locationService.findLocListByRoomId(id, RoomType.ALONE);
+
+        Map<String, Double> center = locationService.centerLocation(locList);
+
+        model.addAttribute("alone", RoomType.ALONE);
+        model.addAttribute("uuid",id);
+        model.addAttribute("locationList", locList);
+        model.addAttribute("center", center);
+
+        return "/page/alone_center_location";
     }
 
-    // restapi로 바꾸기
-    @DeleteMapping("/together/removeLocation/{id}")
-    public String removeLocation(@PathVariable Long id){
-        locationService.removeLocation(id);
-        return"";
+    // 공유된 url 링크로 접속 시
+    @GetMapping("/alone/share/{id}")
+    public String shareUrl(@PathVariable String id, Model model) throws NoHandlerFoundException {
+        roomService.checkShareRoom(id);
+
+        List<LocationDto> locList = locationService.findLocListByRoomId(id, RoomType.ALONE);
+
+        Map<String, Double> center = locationService.centerLocation(locList);
+
+        model.addAttribute("alone", RoomType.ALONE);
+        model.addAttribute("uuid",id);
+        model.addAttribute("locationList", locList);
+        model.addAttribute("center", center);
+
+        return "/page/alone_center_location";
     }
 
 }

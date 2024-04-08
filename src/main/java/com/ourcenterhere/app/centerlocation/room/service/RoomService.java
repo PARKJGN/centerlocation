@@ -56,31 +56,6 @@ public class RoomService {
         return room.getUuid();
     }
 
-    public List<LocationDto> findLocListByRoomId(String id, RoomType type){
-        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(id)).orElse(null);
-
-        // db에 일치하는 방의 데이터가 없을때
-        if(roomEntity == null){
-            throw new RoomNotFoundException(ErrorCode.NOT_FOUND_ROOM);
-        }
-        // 유저가 입력한 방 코드의 타입(alone, together)과 view단에서 입력한 페이지의 기능과 다를때
-        if(type!=roomEntity.getType()){
-            throw new RoomNotMatchTypeException(ErrorCode.NOT_MATCH_ROOM_TYPE);
-        }
-
-        List<LocationDto> locationEntityList = roomEntity.getLoc().stream()
-                .map(a->{
-                    if(roomEntity.getType()==RoomType.ALONE)
-                        return a.toAloneLocationDto();
-                    else{
-                        return a.toTogetherLocationDto();
-                    }
-                })
-                .toList();
-
-        return locationEntityList;
-    }
-
     public UUID checkRoom(UUID id){
         RoomEntity roomEntity = roomRepository.findById(id).orElse(null);
 
@@ -111,16 +86,4 @@ public class RoomService {
 
         return id.toString();
     }
-
-    @Transactional
-    public void saveLocation(LocationDto locationDto) {
-        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(locationDto.getRoomId())).orElse(null);
-
-        if(roomEntity==null){
-            throw new RoomNotFoundException(ErrorCode.NOT_FOUND_ROOM);
-        }
-        LocationEntity locationEntity = locationDto.toEntity();
-        locationEntity.setRoomEntity(roomEntity);
-    }
-
 }

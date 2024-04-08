@@ -1,7 +1,13 @@
 package com.ourcenterhere.app.centerlocation.location.service;
 
+import com.ourcenterhere.app.centerlocation.exception.ErrorCode;
+import com.ourcenterhere.app.centerlocation.exception.RoomNotFoundException;
+import com.ourcenterhere.app.centerlocation.exception.RoomNotMatchTypeException;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
+import com.ourcenterhere.app.centerlocation.location.entity.LocationEntity;
 import com.ourcenterhere.app.centerlocation.location.repository.LocationRepository;
+import com.ourcenterhere.app.centerlocation.room.entity.RoomEntity;
+import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +18,11 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @Service
+@RequiredArgsConstructor
 public class LocationService {
 
     private final LocationRepository locationRepository;
-
-    @Autowired
-    public LocationService(LocationRepository locationRepository){
-        this.locationRepository = locationRepository;
-    }
+    private final RoomRepository roomRepository;
 
     /*
         유저가 입력한 주소들의 좌표를 가지고 중심점을 구하는 함수
@@ -106,6 +109,42 @@ public class LocationService {
     public void removeLocation(Long id){
         // id에 해당하는 데이터가 없으면 IllegalArgumentException 발생
         locationRepository.deleteById(id);
+    }
+
+    public List<LocationDto> findLocListByRoomId(String id, RoomType type){
+        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(id)).orElse(null);
+
+        // db에 일치하는 방의 데이터가 없을때
+        if(roomEntity == null){
+            throw new RoomNotFoundException(ErrorCode.NOT_FOUND_ROOM);
+        }
+        // 유저가 입력한 방 코드의 타입(alone, together)과 view단에서 입력한 페이지의 기능과 다를때
+        if(type!=roomEntity.getType()){
+            throw new RoomNotMatchTypeException(ErrorCode.NOT_MATCH_ROOM_TYPE);
+        }
+
+        List<LocationDto> locationList = roomEntity.getLoc().stream()
+                .map(a->{
+                    if(roomEntity.getType()==RoomType.ALONE)
+                        return a.toAloneLocationDto();
+                    else{
+                        return a.toTogetherLocationDto();
+                    }
+                })
+                .toList();
+
+        return locationList;
+    }
+
+    @Transactional
+    public void saveLocation(LocationDto locationDto) {
+        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(locationDto.getRoomId())).orElse(null);
+
+        if(roomEntity==null){
+            throw new RoomNotFoundException(ErrorCode.NOT_FOUND_ROOM);
+        }
+        LocationEntity locationEntity = locationDto.toEntity();
+        locationEntity.setRoomEntity(roomEntity);
     }
 
 }

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler{
 
     // 추후에 logger?
     // 존재하지 않는 엔드포인트에 접속 시 에러페이지로 이동시키기 위해
-    @ExceptionHandler({NoHandlerFoundException.class})
+    @ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public String handelNoHandlerFound(Exception e){
         return "/error/404";
     }
@@ -52,6 +53,7 @@ public class GlobalExceptionHandler{
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDetails> handleException(Exception ex){
         ErrorCode errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+
         return handleExceptionInternal(errorCode);
     }
 

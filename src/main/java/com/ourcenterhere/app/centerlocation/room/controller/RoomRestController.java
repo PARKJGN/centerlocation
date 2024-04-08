@@ -1,9 +1,17 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.google.gson.Gson;
 import com.ourcenterhere.app.centerlocation.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDtoList;
+import com.ourcenterhere.app.centerlocation.location.service.LocationService;
+import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +29,12 @@ public class RoomRestController {
 
     private final RoomService roomService;
 
-    // 혼자 구하기 방 생성 and 데이터 insert
-    @PostMapping("/alone/save")
-    public ResponseEntity<ResponseDto> aloneSaveLocation(@ModelAttribute LocationDtoList list, Model model){
-        List<LocationDto> locationDtoList = list.getLocationDtoList();
-
-        UUID uuid = roomService.enrollAloneRoom(locationDtoList);
-
-        return ResponseEntity.ok(ResponseDto.res(HttpStatus.OK, HttpStatus.OK.toString(), uuid.toString()));
-    }
-
     // 혼자 구하기 url 공유할때 url 만드는 api
     @GetMapping("/roomUrl/{id}")
     public ResponseEntity<ResponseDto> RoomUrl(@PathVariable UUID id){
+
+        roomService.checkRoom(id);
+
         UriComponents uriComponents = UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
@@ -47,9 +48,15 @@ public class RoomRestController {
 
     // 같이 구하기 방 만들기
     @GetMapping("/makeRoom")
-    public String makeRoom(){
+    public ResponseEntity<ResponseDto> makeRoom(){
         String id = roomService.enrollTogetherRoom();
-        return id;
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString(), id));
     }
 
+    // 같이 구하기 방 참여하기 방 존재 여부
+    @GetMapping("/checkRoom/{id}")
+    public ResponseEntity<ResponseDto> checkRoom(@PathVariable String id){
+        roomService.checkRoom(UUID.fromString(id));
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString(), id));
+    }
 }

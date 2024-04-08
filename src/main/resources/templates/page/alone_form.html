@@ -7,7 +7,7 @@
     <script th:src="@{/static/alone/aloneForm.js}"></script>
 
     <!-- offcanvas(주소목록) 이벤트 -->
-    <script th:src="@{/static/offcanvas/offcanvas.js}"></script>
+    <script th:src="@{/static/addressOffcanvas/offcanvas.js}"></script>
 </th:block>
 <body>
     <div layout:fragment="content">
@@ -27,7 +27,7 @@
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control input-location">주소를 입력해 주세요.</span>
                             <input class = "road-name" type="hidden" name="LocationDtoList[0].roadName">
                         </div>
                         <div class="col-2 themed-grid-col">
@@ -42,7 +42,7 @@
                             </label>
                         </div>
                         <div class="col-sm-4 themed-grid-col">
-                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control inputaddress">주소를 입력해 주세요.</span>
+                            <span href="#offcanvasExample" data-bs-toggle="offcanvas" class="form-control input-location">주소를 입력해 주세요.</span>
                             <input class = "road-name" type="hidden" name="LocationDtoList[1].roadName">
                         </div>
                         <div class="col-2 themed-grid-col">
@@ -69,7 +69,7 @@
                     </a>
                     <button type="button" class="btn-close hidecanvas" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="address-list list-group list-group-flush border-bottom scrollarea">
+                <div class="location-list list-group list-group-flush border-bottom scrollarea">
                 </div>
             </div>
     </div>

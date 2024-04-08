@@ -1,7 +1,7 @@
 $(()=>{
     // 주소입력칸 클릭시 주소입력칸 위치 기억
-    $(document).on('click', '.inputaddress', (e) => {
-        addressinput = $(e.target)
+    $(document).on('click', '.input-location', (e) => {
+        addressInput = $(e.target)
     })
 
     // 주소목록 사이드바 show할때 주소 입력창 focus
@@ -12,7 +12,7 @@ $(()=>{
     // 주소입력 사이드바 사라질때 안에 내용 초기화
     $(".offcanvas").on("hidden.bs.offcanvas", (e) => {
         $(".search-location").val("")
-        $(".address-list").empty()
+        $(".location-list").empty()
     })
 
     // 주소입력 Enter key 적용
@@ -51,7 +51,7 @@ const searchAddress = (text) => {
         dataType: 'JSON',
         success: (res)=> {
 
-            $(".address-list").empty();
+            $(".location-list").empty();
 
             if(res.documents.length===0) {
                 alert("검색결과가 없습니다.")
@@ -62,7 +62,7 @@ const searchAddress = (text) => {
                 // 도로명 안나와있으면 보여주지 않기
                 if(doc.road_address_name==="") return
 
-                $(".address-list").append(
+                $(".location-list").append(
                     `<a class="address list-group-item list-group-item-action py-3 lh-tight">
                         <div class="d-flex w-100 align-items-center justify-content-between placename">
                             <strong class="mb-1">${doc.place_name}</strong>
