@@ -69,18 +69,18 @@
  
 2024-04-08
 
-address -> location으로 명칭 통일
+- address -> location으로 명칭 통일
 
-부트스트랩 SourceMap인 .map파일 추가
+- 부트스트랩 SourceMap인 .map파일 추가
 
-RestController, Controller, Room, Location 구분
+- RestController, Controller, Room, Location 구분
 
-모달창, 오프캔버스 창 사라질때 내용 초기화되는 기능
+- 모달창, 오프캔버스 창 사라질때 내용 초기화되는 기능
 
-HttpRequestMethodNotSupportedException 예외 추가
+- HttpRequestMethodNotSupportedException 예외 추가
 -> post주소를 get으로 들어갈때 에러페이지 표시
 
-gson 라이브러리 추가
+- gson 라이브러리 추가
 -> ajax success로 json을 전달하기 위해 (같이 구하기에서 save Or remove할때 db에서 select)
 
 
