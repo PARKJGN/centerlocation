@@ -82,5 +82,3 @@
 
 - gson 라이브러리 추가
 -> ajax success로 json을 전달하기 위해 (같이 구하기에서 save Or remove할때 db에서 select)
-
-
