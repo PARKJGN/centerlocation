@@ -1,4 +1,20 @@
 $(()=>{
+    // 지도의 마커
+    const markers = []
+
+    // 마커의 오버레이
+    const markerOverlays = []
+
+    const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+    const options = { //지도를 생성할 때 필요한 기본 옵션
+        center: new kakao.maps.LatLng(37.498008, 127.028027), //지도의 중심좌표.
+        level: 3 //지도의 레벨(확대, 축소 정도)
+    };
+
+    const map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+
+    // 페이지가 이동되자마자 데이터 가져오기
+    selectLocations($('.uuid').val(), map, markers, markerOverlays)
 
     // modal과 offcanvas의 백드롭이 겹치면서 발생하는 z-index문제 해결 이벤트
     $(".offcanvas").on("show.bs.offcanvas", (e) => {
@@ -12,7 +28,7 @@ $(()=>{
 
     // 장소 추가 모달창에서 추가하기 이벤트
     $(".addLocation").click(()=>{
-        regexAndSave()
+        regexAndSave(map, markers, markerOverlays)
     })
 
     // 장소 추가 모달창 사라질때 안에 내용 초기화
@@ -26,10 +42,14 @@ $(()=>{
 
     // 주소 하나 제거
     $(document).on('click', '.remove-location', (e) => {
-        removeLocation(e);
+        removeLocation(e, map, markers, markerOverlays);
     })
     
     // 5초마다 변경된 정보를 가지고 화면에 변경
+    setInterval(()=>{
+        selectLocations($('.uuid').val(), map, markers, markerOverlays)
+    }, 5000)
+
 })
 
 // 주소목록 중 하나 적용하는 이벤트
@@ -54,7 +74,7 @@ const setAddressInput =(e)=>{
 }
 
 // 정규식 검사 및 장소 save
-const regexAndSave = ()=>{
+const regexAndSave = (map, markers, markerOverlays)=>{
 
     const latitude = $('.latitude').val()
     const longitude = $('.longitude').val()
@@ -80,7 +100,7 @@ const regexAndSave = ()=>{
         dataType: "json",
         success: (res)=>{
             if(res.statusCode==="OK"){
-                selectLocations(roomId)
+                selectLocations(roomId, map, markers, markerOverlays)
 
             }
         },
@@ -94,7 +114,7 @@ const regexAndSave = ()=>{
 }
 
 // 유저들의 주소 목록에서 주소 삭제 이벤트
-const removeLocation = (e)=>{
+const removeLocation = (e, map, markers, markerOverlays)=>{
 
     // 삭제버튼을 누른 주소칸
     const location = $(e.target).parent().parent()
@@ -108,10 +128,10 @@ const removeLocation = (e)=>{
         url: "/together/removeLocation",
         data: {"id": id},
         success: (res)=>{
+
             if(res.statusCode==="OK"){
+                selectLocations(roomId, map, markers, markerOverlays);
                 alert("삭제가 완료되었습니다.")
-                location.remove();
-                selectLocations(roomId);
             }
 
         },
@@ -122,7 +142,7 @@ const removeLocation = (e)=>{
 }
 
 // 해당 방의 유저들의 장소 select
-const selectLocations = (id)=>{
+const selectLocations = (id, map, markers, markerOverlays)=>{
 
     $(".user-location-list").empty()
 
@@ -132,8 +152,16 @@ const selectLocations = (id)=>{
         data: {"id": id},
         success: (res)=>{
             if(res.statusCode==="OK"){
-                const locations = JSON.parse(res.resultData)
 
+                const locations = JSON.parse(res.resultData)
+                let center = null
+
+                // 가져온 장소가 없으면 카카오지점 map, 1개면 해당 지점, 2개 이상부터 가운데 지점
+                if(locations.length>=2){
+                    center = JSON.parse(res.resultMsg)
+                }
+
+                // 장소 목록보기 채워넣기
                 locations.forEach((loc, idx)=>{
                     $('.user-location-list').append(`
                     <a class="list-group-item list-group-item-action py-3 lh-tight">
@@ -145,6 +173,7 @@ const selectLocations = (id)=>{
                         <input class="id" type="hidden" value=${loc.id}>
                     </a>`)
                 })
+                changeMap(locations, center, map, markers, markerOverlays)
             }
         },
         error: (err)=>{
@@ -153,8 +182,66 @@ const selectLocations = (id)=>{
     })
 }
 
-const changeMap = ()=>{
+const changeMap = (locations, center, map, markers, markerOverlays)=>{
 
+    // 보여줄 맵의 경졔
+    const bounds = new kakao.maps.LatLngBounds();
+
+    // 기존에 마커가 찍혀있었으면 마커와 마커오버레이 제거
+    if(markers.length!==0){
+        markers.forEach((marker, idx)=>{
+            marker.setMap(null)
+            markerOverlays[idx].setMap(null)
+        })
+    }
+
+    // 중심값이 null -> 장소가 0개 아니면 1개
+    if(center===null){
+        // 장소가 1개이면
+        if(locations.length===1){
+
+            // 보여줄 맵의 가운데 지점
+            map.setCenter(new kakao.maps.LatLng(locations[0].latitude, locations[0].longitude))
+
+            const marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(locations[0].latitude, locations[0].longitude),
+                image: new kakao.maps.MarkerImage(`/static/icon/number/1.png`,new kakao.maps.Size(64,64))
+            })
+
+            const markerOverlay = new kakao.maps.CustomOverlay({
+                position: new kakao.maps.LatLng(locations[0].latitude, locations[0].longitude),
+                content: `<div class ="label"><span class="left"></span><span class="center">${locations[0].userName}</span><span class="right"></span></div>`
+            })
+            markers.push(marker)
+            markerOverlays.push(markerOverlay)
+        }
+    }
+    // 중심값이 있다 -> 장소가 2개 이상
+    else {
+        map.setCenter(new kakao.maps.LatLng(center.Latitude, center.Longitude))
+
+        locations.forEach((loc, idx)=>{
+            const marker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
+                image: new kakao.maps.MarkerImage(`/static/icon/number/${idx+1}.png`,new kakao.maps.Size(64,64))
+            })
+            bounds.extend(new kakao.maps.LatLng(loc.latitude, loc.longitude))
+            markers.push(marker)
+
+            const markerOverlay = new kakao.maps.CustomOverlay({
+                position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
+                content: `<div class ="label"><span class="left"></span><span class="center">${loc.userName}</span><span class="right"></span></div>`
+            })
+            markerOverlays.push(markerOverlay)
+            map.setBounds(bounds)
+        })
+    }
+    
+    // 맵에 마커와 마커오버레이 찍기
+    markers.forEach((marker, idx)=>{
+        marker.setMap(map)
+        markerOverlays[idx].setMap(map)
+    })
 }
 
 

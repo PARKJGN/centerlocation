@@ -12,9 +12,12 @@ public enum ErrorCode {
 
     NOT_FOUND_ROOM(HttpStatus.NOT_FOUND, "없는 방 코드 입니다."),
 
+    NOT_FOUND_LOCATION(HttpStatus.NOT_FOUND, "이미 삭제된 장소입니다."),
+
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "유효한 값이 아닙니다."),
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "오류가 발생했습니다. 다시 시도해주세요.");
+
 
 
 

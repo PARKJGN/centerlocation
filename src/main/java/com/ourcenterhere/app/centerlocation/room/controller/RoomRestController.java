@@ -1,21 +1,11 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.Gson;
 import com.ourcenterhere.app.centerlocation.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
-import com.ourcenterhere.app.centerlocation.location.dto.LocationDtoList;
-import com.ourcenterhere.app.centerlocation.location.service.LocationService;
-import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,7 +23,7 @@ public class RoomRestController {
     @GetMapping("/roomUrl/{id}")
     public ResponseEntity<ResponseDto> RoomUrl(@PathVariable UUID id){
 
-        roomService.checkRoom(id);
+        roomService.checkRoomById(id);
 
         UriComponents uriComponents = UriComponentsBuilder
                 .newInstance()
@@ -56,7 +46,14 @@ public class RoomRestController {
     // 같이 구하기 방 참여하기 방 존재 여부
     @GetMapping("/checkRoom/{id}")
     public ResponseEntity<ResponseDto> checkRoom(@PathVariable String id){
-        roomService.checkRoom(UUID.fromString(id));
+        roomService.checkRoomById(UUID.fromString(id));
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString(), id));
+    }
+
+    // 같이 구하기 center 구하기
+    @PostMapping("/center")
+    public ResponseEntity<ResponseDto> getCenter(@RequestParam List<LocationDto> locList){
+
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString()));
     }
 }

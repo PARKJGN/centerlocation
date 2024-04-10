@@ -2,7 +2,6 @@ package com.ourcenterhere.app.centerlocation.room.service;
 
 import com.ourcenterhere.app.centerlocation.exception.ErrorCode;
 import com.ourcenterhere.app.centerlocation.exception.RoomNotFoundException;
-import com.ourcenterhere.app.centerlocation.exception.RoomNotMatchTypeException;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.entity.LocationEntity;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomEntity;
@@ -56,18 +55,26 @@ public class RoomService {
         return room.getUuid();
     }
 
-    public UUID checkRoom(UUID id){
+    public void checkRoomById(UUID id){
         RoomEntity roomEntity = roomRepository.findById(id).orElse(null);
 
         if(roomEntity == null){
             throw new RoomNotFoundException(ErrorCode.NOT_FOUND_ROOM);
         }
-
-        return roomEntity.getUuid();
     }
 
     public void checkShareRoom(String id) throws NoHandlerFoundException {
-        RoomEntity roomEntity = roomRepository.findById(UUID.fromString(id)).orElse(null);
+        
+        // 유저가 url의 id값에 이상한 uuid가 아닌 값을 넣었을 경우 404페이지로
+        UUID uuid = null;
+
+        try{
+            uuid = UUID.fromString(id);
+        }catch (IllegalArgumentException ex){
+            throw new NoHandlerFoundException("GET", id, new HttpHeaders());
+        }
+        
+        RoomEntity roomEntity = roomRepository.findById(uuid).orElse(null);
 
         if(roomEntity == null){
             throw new NoHandlerFoundException("GET", id, new HttpHeaders());

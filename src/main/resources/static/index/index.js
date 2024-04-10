@@ -34,8 +34,14 @@ $(()=>{
                 alert(err.responseJSON.message)
             }
         })
+    })
 
-
+    // 방 코드 Enter key 적용
+    $(".code").on("keyup", (key) => {
+        key.preventDefault()
+        if (key.keyCode === 13) {
+            $(".join-room").click()
+        }
     })
 
     // 방 참가하기 모달창 꺼지면 input값 초기화

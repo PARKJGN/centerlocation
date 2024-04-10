@@ -31,6 +31,12 @@ public class GlobalExceptionHandler{
         return handleExceptionInternal(errorCode);
     }
 
+    @ExceptionHandler(LocationNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleLocationNotFoundException(LocationNotFoundException ex){
+        ErrorCode errorCode = ex.getErrorCode();
+        return handleExceptionInternal(errorCode);
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDetails> handleIllegalArgument(IllegalArgumentException e) {
         ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;

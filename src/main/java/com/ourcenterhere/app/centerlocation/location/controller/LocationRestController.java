@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -35,15 +36,19 @@ public class LocationRestController {
         return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString()));
     }
 
-    // 해당 방에 있는 장소들 select
+    // 해당 방에 있는 장소들 select And 장소들의 가운데 지점
     @PostMapping("/together/selectLocations")
     public ResponseEntity<ResponseDto> selectLocationsFromRoom(@RequestParam String id){
 
         List<LocationDto> locList= locationService.findLocListByRoomId(id, RoomType.TOGETHER);
+        Map<String, Double> center = null;
 
+        if(locList.size()>=2){
+            center = locationService.centerLocation(locList);
+        }
         Gson gson = new Gson();
 
-        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, HttpStatus.OK.toString(), gson.toJson(locList)));
+        return ResponseEntity.ok(new ResponseDto(HttpStatus.OK, gson.toJson(center), gson.toJson(locList)));
     }
 
     // 같이 구하기 장소 추가

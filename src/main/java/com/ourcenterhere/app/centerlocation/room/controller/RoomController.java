@@ -61,6 +61,8 @@ public class RoomController {
     // 공유된 url 링크로 접속 시
     @GetMapping("/alone/share/{id}")
     public String shareUrl(@PathVariable String id, Model model) throws NoHandlerFoundException {
+        // 유저가 브라우저창에 임의로 id를 적고 들어왔을때 확인용
+        // 만약 이상한 id면 404page
         roomService.checkShareRoom(id);
 
         List<LocationDto> locList = locationService.findLocListByRoomId(id, RoomType.ALONE);
