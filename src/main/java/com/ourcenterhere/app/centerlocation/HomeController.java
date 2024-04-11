@@ -11,7 +11,7 @@ public class HomeController {
 
     @GetMapping("/alone")
     public String aloneForm(Model model){
-        return "/page/alone_form";
+        return "page/alone_form";
     }
 
     @GetMapping("/")

@@ -1,4 +1,4 @@
-package com.ourcenterhere.app.centerlocation;
+package com.ourcenterhere.app.centerlocation.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

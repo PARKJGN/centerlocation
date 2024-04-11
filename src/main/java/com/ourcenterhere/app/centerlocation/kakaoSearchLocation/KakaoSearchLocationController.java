@@ -31,7 +31,6 @@ public class KakaoSearchLocationController {
 
         String responseBody = apiSearchLocation.get(apiURL,Authorization);
 
-        System.out.println(responseBody);
         return responseBody;
     }
 }

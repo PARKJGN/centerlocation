@@ -232,8 +232,15 @@ const changeMap = (locations, center, map, markers, markerOverlays)=>{
                 position: new kakao.maps.LatLng(loc.latitude, loc.longitude),
                 content: `<div class ="label"><span class="left"></span><span class="center">${loc.userName}</span><span class="right"></span></div>`
             })
+
+            const centerMarker = new kakao.maps.Marker({
+                position: new kakao.maps.LatLng(center.Latitude, center.Longitude),
+                image: new kakao.maps.MarkerImage(`/static/icon/number/center.png`,new kakao.maps.Size(48,56))
+            })
+
             markerOverlays.push(markerOverlay)
             map.setBounds(bounds)
+            centerMarker.setMap(map)
         })
     }
     

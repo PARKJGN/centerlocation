@@ -1,24 +1,17 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
-import com.ourcenterhere.app.centerlocation.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;
 import com.ourcenterhere.app.centerlocation.room.entity.RoomType;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,7 +33,7 @@ public class RoomController {
         model.addAttribute("uuid",id);
         model.addAttribute("together", RoomType.TOGETHER);
         model.addAttribute("locationList", locList);
-        return "/page/together_center_location";
+        return "page/together_center_location";
     }
 
     @PostMapping("/alone")
@@ -55,7 +48,7 @@ public class RoomController {
         model.addAttribute("locationList", locList);
         model.addAttribute("center", center);
 
-        return "/page/alone_center_location";
+        return "page/alone_center_location";
     }
 
     // 공유된 url 링크로 접속 시
@@ -74,7 +67,7 @@ public class RoomController {
         model.addAttribute("locationList", locList);
         model.addAttribute("center", center);
 
-        return "/page/alone_center_location";
+        return "page/alone_center_location";
     }
 
 }

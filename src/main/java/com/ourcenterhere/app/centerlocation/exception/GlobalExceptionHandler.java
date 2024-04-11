@@ -53,7 +53,7 @@ public class GlobalExceptionHandler{
     // 존재하지 않는 엔드포인트에 접속 시 에러페이지로 이동시키기 위해
     @ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public String handelNoHandlerFound(Exception e){
-        return "/error/404";
+        return "error/404";
     }
 
     @ExceptionHandler(Exception.class)

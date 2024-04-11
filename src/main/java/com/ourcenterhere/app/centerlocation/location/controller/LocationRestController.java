@@ -1,7 +1,7 @@
 package com.ourcenterhere.app.centerlocation.location.controller;
 
 import com.google.gson.Gson;
-import com.ourcenterhere.app.centerlocation.ResponseDto;
+import com.ourcenterhere.app.centerlocation.Response.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDtoList;
 import com.ourcenterhere.app.centerlocation.location.service.LocationService;

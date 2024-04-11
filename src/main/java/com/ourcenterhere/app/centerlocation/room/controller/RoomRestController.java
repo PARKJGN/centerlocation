@@ -1,6 +1,6 @@
 package com.ourcenterhere.app.centerlocation.room.controller;
 
-import com.ourcenterhere.app.centerlocation.ResponseDto;
+import com.ourcenterhere.app.centerlocation.Response.ResponseDto;
 import com.ourcenterhere.app.centerlocation.location.dto.LocationDto;
 import com.ourcenterhere.app.centerlocation.room.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class RoomRestController {
         UriComponents uriComponents = UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
-                .host("localhost:8080")
+                .host("3.39.152.94:8080")
                 .path("alone/share/")
                 .path(String.valueOf(id))
                 .build();
