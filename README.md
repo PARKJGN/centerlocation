@@ -121,3 +121,5 @@
     - 배포 후 어떤 page를 가던 template might not exist or might not be accessible by any of the configured Template Resolvers 오류 발생
     - 원인 : html을 리턴해주는 컨트롤러에서 return값을 /부터 시작해서 - IDE에서는 //를 / 하나로 처리를 해주지만 jar 배포시에는 처리를 해주지 못한다.
 - rds mysql 연결
+- clipboard api -> execCommand로 변경
+    - clipboard는 https와 localhost에서만 적용되므로 도메인을 구매하지 않으면 적용할 수 없어서
