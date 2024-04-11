@@ -113,3 +113,11 @@
     - 그래도 sumbit이 날라갔다
     - input hidden="hidden" 태그를 넣으니 오류가 사라졌다
 
+2024-04-11
+
+- 같이 구하기시 센터 마커안찍어 주던 오류 해결
+- favicon 추가
+- aws ec2 생성 후 배포 
+    - 배포 후 어떤 page를 가던 template might not exist or might not be accessible by any of the configured Template Resolvers 오류 발생
+    - 원인 : html을 리턴해주는 컨트롤러에서 return값을 /부터 시작해서 - IDE에서는 //를 / 하나로 처리를 해주지만 jar 배포시에는 처리를 해주지 못한다.
+- rds mysql 연결
