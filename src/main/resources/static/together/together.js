@@ -238,9 +238,9 @@ const changeMap = (locations, center, map, markers, markerOverlays)=>{
                 image: new kakao.maps.MarkerImage(`/static/icon/number/center.png`,new kakao.maps.Size(48,56))
             })
 
+            marker.push(centerMarker)
             markerOverlays.push(markerOverlay)
             map.setBounds(bounds)
-            centerMarker.setMap(map)
         })
     }
     
