@@ -123,3 +123,7 @@
 - rds mysql 연결
 - clipboard api -> execCommand로 변경
     - clipboard는 https와 localhost에서만 적용되므로 도메인을 구매하지 않으면 적용할 수 없어서
+
+ 2024-04-12
+
+- 같이 구하기시 center 마커가 여러개 찍히던 현상 해결
